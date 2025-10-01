@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../providers/app_provider.dart';
 import '../models/customer.dart';
 import '../models/transaction.dart' as app_transaction;
@@ -437,12 +438,40 @@ class _CustomerScreenState extends State<CustomerScreen> {
     );
   }
 
-  void _shareStatement() {
-    // TODO: تطبيق مشاركة كشف الحساب
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('ميزة المشاركة ستكون متاحة قريباً'),
-      ),
-    );
+  Future<void> _shareStatement() async {
+    final formatter = NumberFormat("#,##0.00", "ar");
+    final dateFormatter = DateFormat("dd/MM/yyyy", "ar");
+
+    String statement = "كشف حساب الزبون: ${widget.customer.name}\n";
+    statement += "الرصيد الحالي: ${formatter.format(widget.customer.balance.abs())} ر.س ${widget.customer.balance < 0 ? 'عليه' : 'له'}\n\n";
+    statement += "سجل المعاملات:\n";
+
+    if (_transactions.isEmpty) {
+      statement += "لا توجد معاملات مسجلة لهذا الزبون.\n";
+    } else {
+      for (var transaction in _transactions) {
+        final typeText = transaction.type == app_transaction.TransactionType.debt ? 'دين' : 'سداد';
+        final amountText = formatter.format(transaction.amount);
+        final dateText = dateFormatter.format(transaction.date);
+        final descriptionText = transaction.description != null && transaction.description!.isNotEmpty ? ' (${transaction.description})' : '';
+        statement += "- $typeText: $amountText ر.س في $dateText$descriptionText\n";
+      }
+    }
+
+    final String encodedStatement = Uri.encodeComponent(statement);
+    final String whatsappUrl = "whatsapp://send?phone=${widget.customer.phoneNumber ?? ''}&text=$encodedStatement";
+
+    if (await canLaunchUrl(Uri.parse(whatsappUrl))) {
+      await launchUrl(Uri.parse(whatsappUrl));
+    } else {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("لا يمكن فتح واتساب. تأكد من تثبيته على جهازك."),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
 }
