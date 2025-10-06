@@ -369,7 +369,7 @@ class DatabaseService {
     
     // استيراد المعاملات
     final transactions = (data['transactions'] as List)
-        .map((t) => Transaction.fromMap(t as Map<String, dynamic>))
+        .map((t) => app_transaction.Transaction.fromMap(t as Map<String, dynamic>))
         .toList();
     
     for (final transaction in transactions) {
