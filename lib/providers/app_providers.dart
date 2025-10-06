@@ -1,8 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/material.dart' hide ThemeMode;
+import 'package:flutter/material.dart';
+import '../models/app_settings.dart' as AppSettingsModel;
 import '../models/customer.dart';
 import '../models/transaction.dart';
-import '../models/app_settings.dart';
+import '../models/app_settings.dart' as AppSettingsModel;
 import '../services/database_service.dart';
 import '../services/settings_service.dart';
 import '../services/backup_service.dart';
@@ -23,14 +24,14 @@ final backupServiceProvider = Provider<BackupService>((ref) {
 });
 
 // ============= Settings Provider =============
-final settingsProvider = StateNotifierProvider<SettingsNotifier, AppSettings>((ref) {
+final settingsProvider = StateNotifierProvider<SettingsNotifier, AppSettingsModel.AppSettings>((ref) {
   return SettingsNotifier(ref.read(settingsServiceProvider));
 });
 
-class SettingsNotifier extends StateNotifier<AppSettings> {
+class SettingsNotifier extends StateNotifier<AppSettingsModel.AppSettings> {
   final SettingsService _settingsService;
 
-  SettingsNotifier(this._settingsService) : super(const AppSettings()) {
+  SettingsNotifier(this._settingsService) : super(const AppSettingsModel.AppSettings()) {
     _loadSettings();
   }
 
@@ -39,7 +40,7 @@ class SettingsNotifier extends StateNotifier<AppSettings> {
     state = settings;
   }
 
-  Future<void> updateThemeMode(ThemeMode themeMode) async {
+      Future<void> updateThemeMode(AppSettingsModel.AppThemeMode themeMode) async {
     final newSettings = state.copyWith(themeMode: themeMode);
     state = newSettings;
     await _settingsService.saveSettings(newSettings);
@@ -240,3 +241,4 @@ final customerTransactionsProvider = FutureProvider.family<List<Transaction>, in
   final databaseService = ref.read(databaseServiceProvider);
   return await databaseService.getCustomerTransactions(customerId);
 });
+

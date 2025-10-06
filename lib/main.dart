@@ -1,5 +1,6 @@
 import 'package:daftar_g/models/customer.dart';
 import 'package:flutter/material.dart';
+import 'package:daftar_g/models/app_settings.dart' as AppSettingsModel;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,11 @@ class DaftarGApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(settings.primaryColor),
       darkTheme: AppTheme.darkTheme(settings.primaryColor),
-      themeMode: settings.themeMode as ThemeMode?,
+      themeMode: settings.themeMode == AppSettingsModel.AppThemeMode.dark
+          ? ThemeMode.dark
+          : (settings.themeMode == AppSettingsModel.AppThemeMode.light
+              ? ThemeMode.light
+              : ThemeMode.system),
       locale: const Locale('ar'),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,

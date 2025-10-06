@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-enum ThemeMode {
+enum AppThemeMode {
   light,
   dark,
   system,
 }
 
 class AppSettings {
-  final ThemeMode themeMode;
+  final AppThemeMode themeMode;
   final Color primaryColor;
   final String currency;
   final String dateFormat;
   final bool enableNotifications;
 
   const AppSettings({
-    this.themeMode = ThemeMode.system,
+    this.themeMode = AppThemeMode.system,
     this.primaryColor = Colors.teal,
     this.currency = 'د.ع', // دينار عراقي
     this.dateFormat = 'dd/MM/yyyy',
@@ -24,7 +24,7 @@ class AppSettings {
   // تحويل من Map إلى AppSettings
   factory AppSettings.fromMap(Map<String, dynamic> map) {
     return AppSettings(
-      themeMode: ThemeMode.values[map['themeMode'] as int? ?? 2],
+      themeMode: AppThemeMode.values[map["themeMode"] as int? ?? 2],
       primaryColor: Color(map['primaryColor'] as int? ?? Colors.teal.value),
       currency: map['currency'] as String? ?? 'د.ع',
       dateFormat: map['dateFormat'] as String? ?? 'dd/MM/yyyy',
@@ -45,7 +45,7 @@ class AppSettings {
 
   // نسخ مع تعديل
   AppSettings copyWith({
-    ThemeMode? themeMode,
+    AppThemeMode? themeMode,
     Color? primaryColor,
     String? currency,
     String? dateFormat,
@@ -85,3 +85,4 @@ class AppSettings {
         enableNotifications.hashCode;
   }
 }
+

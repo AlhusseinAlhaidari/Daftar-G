@@ -2,7 +2,7 @@ import 'package:flutter/material.dart' hide ThemeMode;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/app_providers.dart';
 import '../../constants/app_constants.dart';
-import '../../models/app_settings.dart';
+import '../../models/app_settings.dart' as AppSettingsModel;
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -60,7 +60,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildThemeModeSelector(BuildContext context, WidgetRef ref, AppSettings settings) {
+  Widget _buildThemeModeSelector(BuildContext context, WidgetRef ref, AppSettingsModel.AppSettings settings) {
     return ListTile(
       leading: const Icon(Icons.brightness_6),
       title: const Text('الوضع'),
@@ -73,9 +73,9 @@ class SettingsScreen extends ConsumerWidget {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                RadioListTile<ThemeMode>(
+                RadioListTile<AppSettingsModel.AppThemeMode>(
                   title: const Text('فاتح'),
-                  value: ThemeMode.light,
+                  value: AppSettingsModel.AppThemeMode.light,
                   groupValue: settings.themeMode,
                   onChanged: (value) {
                     if (value != null) {
@@ -84,9 +84,9 @@ class SettingsScreen extends ConsumerWidget {
                     }
                   },
                 ),
-                RadioListTile<ThemeMode>(
+                RadioListTile<AppSettingsModel.AppThemeMode>(
                   title: const Text('داكن'),
-                  value: ThemeMode.dark,
+                  value: AppSettingsModel.AppThemeMode.dark,
                   groupValue: settings.themeMode,
                   onChanged: (value) {
                     if (value != null) {
@@ -95,9 +95,9 @@ class SettingsScreen extends ConsumerWidget {
                     }
                   },
                 ),
-                RadioListTile<ThemeMode>(
+                RadioListTile<AppSettingsModel.AppThemeMode>(
                   title: const Text('تلقائي'),
-                  value: ThemeMode.system,
+                  value: AppSettingsModel.AppThemeMode.system,
                   groupValue: settings.themeMode,
                   onChanged: (value) {
                     if (value != null) {
@@ -114,7 +114,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildColorSelector(BuildContext context, WidgetRef ref, AppSettings settings) {
+  Widget _buildColorSelector(BuildContext context, WidgetRef ref, AppSettingsModel.AppSettings settings) {
     return ListTile(
       leading: Icon(Icons.palette, color: settings.primaryColor),
       title: const Text('اللون الأساسي'),
@@ -165,7 +165,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildCurrencySelector(BuildContext context, WidgetRef ref, AppSettings settings) {
+  Widget _buildCurrencySelector(BuildContext context, WidgetRef ref, AppSettingsModel.AppSettings settings) {
     return ListTile(
       leading: const Icon(Icons.attach_money),
       title: const Text('العملة'),
@@ -205,14 +205,15 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  String _getThemeModeText(ThemeMode mode) {
+  String _getThemeModeText(AppSettingsModel.AppThemeMode mode) {
     switch (mode) {
-      case ThemeMode.light:
+      case AppSettingsModel.AppThemeMode.light:
         return 'فاتح';
-      case ThemeMode.dark:
+      case AppSettingsModel.AppThemeMode.dark:
         return 'داكن';
-      case ThemeMode.system:
+      case AppSettingsModel.AppThemeMode.system:
         return 'تلقائي';
     }
   }
 }
+
