@@ -30,7 +30,7 @@ class DaftarGApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(settings.primaryColor),
       darkTheme: AppTheme.darkTheme(settings.primaryColor),
-      themeMode: settings.themeMode,
+      themeMode: settings.themeMode as ThemeMode?,
       locale: const Locale('ar'),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -40,10 +40,7 @@ class DaftarGApp extends ConsumerWidget {
       supportedLocales: const [
         Locale('ar'),
       ],
-      home: Directionality(
-        textDirection: TextDirection.rtl,
-        child: const HomeScreen(),
-      ),
+      home: const HomeScreen(),
       routes: {
         '/add_customer': (context) => const AddCustomerScreen(),
         '/reports': (context) => const ReportsScreen(),
